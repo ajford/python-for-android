@@ -19,7 +19,7 @@ if [ "X$PYTHON" == "X" ]; then
 fi
 
 # Paths
-ROOT_PATH="$(dirname $($PYTHON -c 'from __future__ import print_function; import os,sys;print(os.path.realpath(sys.argv[1]))' $0))"
+ROOT_PATH=${PY4A_ROOT-"$(dirname $($PYTHON -c 'from __future__ import print_function; import os,sys;print(os.path.realpath(sys.argv[1]))' $0))"}
 RECIPES_PATH="$ROOT_PATH/recipes"
 BUILD_PATH="$ROOT_PATH/build"
 LIBS_PATH="$ROOT_PATH/build/libs"
@@ -636,7 +636,7 @@ function run() {
 }
 
 function list_modules() {
-	modules=$(find recipes -iname 'recipe.sh' | cut -d/ -f2 | sort -u | xargs echo)
+	modules=$(find $RECIPES_PATH -iname 'recipe.sh' | sed "s|$RECIPES_PATH||" | cut -d/ -f2 | sort -u | xargs echo)
 	echo "Available modules: $modules"
 	exit 0
 }
